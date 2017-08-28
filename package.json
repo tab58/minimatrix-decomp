@@ -11,8 +11,7 @@
     "mocha": "^3.5.0"
   },
   "scripts": {
-    "test": "mocha ./test.js",
-    "inspect": "node --inspect-brk test_runner.js"
+    "test": "mocha ./test.js"
   },
   "repository": {
     "type": "git",
