@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "minimatrix": "^1.0.3"
+  },
+  "name": "minimatrix-decomp",
+  "description": "Decomposition functions for minimatrix matrices.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
+  },
+  "scripts": {
+    "test": "mocha ./test.js",
+    "inspect": "node --inspect-brk test_runner.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tab58/minimatrix-decomp.git"
+  },
+  "keywords": [
+    "decomposition",
+    "matrix",
+    "minimatrix"
+  ],
+  "author": "Tim Bright",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tab58/minimatrix-decomp/issues"
+  },
+  "homepage": "https://github.com/tab58/minimatrix-decomp#readme"
+}
