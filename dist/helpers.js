@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Swaps rows in-place in the matrix. Zero is the first row.
  */
-exports.swapMatrixArrayRows = (A, n, i, j) => {
+exports.swapMatrixArrayRows = function (A, n, i, j) {
     if (i > n - 1 || j > n - 1) {
-        throw new Error(`swapRows(): row index out of bounds.`);
+        throw new Error("swapRows(): row index out of bounds.");
     }
     if (i !== j) {
-        for (let k = 0; k < n; ++k) {
-            const offset = k * n;
-            const tmp = A[i + offset];
+        for (var k = 0; k < n; ++k) {
+            var offset = k * n;
+            var tmp = A[i + offset];
             A[i + offset] = A[j + offset];
             A[j + offset] = tmp;
         }
@@ -18,33 +18,31 @@ exports.swapMatrixArrayRows = (A, n, i, j) => {
     return A;
 };
 /** Swaps two values in an array. */
-exports.swapArrayElements = (A, i, j) => {
+exports.swapArrayElements = function (A, i, j) {
     if (i !== j) {
-        const tmp = A[i];
+        var tmp = A[i];
         A[i] = A[j];
         A[j] = tmp;
     }
     return A;
 };
 /** Swaps components in a vector. */
-exports.swapVectorComponents = (A, i, j) => {
+exports.swapVectorComponents = function (A, i, j) {
     if (i !== j) {
-        const tmp = A.getComponent(i);
+        var tmp = A.getComponent(i);
         A.setComponent(i, A.getComponent(j));
         A.setComponent(j, tmp);
     }
     return A;
 };
 /** Finds the largest element in the row of the matrix. */
-exports.findLargestInRow = (M, i) => {
-    const m = M.toArray([], 0);
-    const n = M.colDimension;
-    const rowOffset = i;
-    let colOffset = 0;
-    let lrgElem = Math.abs(m[rowOffset]);
-    let lrgCol = colOffset;
+exports.findLargestInRow = function (m, n, i) {
+    var rowOffset = i;
+    var colOffset = 0;
+    var lrgElem = Math.abs(m[rowOffset]);
+    var lrgCol = colOffset;
     for (colOffset = 1; colOffset < n; ++colOffset) {
-        const val = Math.abs(m[rowOffset + colOffset * n]);
+        var val = Math.abs(m[rowOffset + colOffset * n]);
         if (val > lrgElem) {
             lrgCol = colOffset;
             lrgElem = val;
@@ -53,20 +51,57 @@ exports.findLargestInRow = (M, i) => {
     return lrgCol;
 };
 /** Finds the largest element in the column of the matrix. */
-exports.findLargestInCol = (M, i) => {
-    const m = M.toArray([], 0);
-    const n = M.colDimension;
-    const rowOffset = i * n;
-    let columnOffset = 0;
-    let lrgElem = Math.abs(m[rowOffset]);
-    let lrgRow = columnOffset;
+exports.findLargestInCol = function (m, n, i) {
+    var rowOffset = i * n;
+    var columnOffset = 0;
+    var lrgElem = Math.abs(m[rowOffset]);
+    var lrgRow = columnOffset;
     for (columnOffset = 1; columnOffset < n; ++columnOffset) {
-        const val = Math.abs(m[rowOffset + columnOffset]);
+        var val = Math.abs(m[rowOffset + columnOffset]);
         if (val > lrgElem) {
             lrgRow = columnOffset;
             lrgElem = val;
         }
     }
     return lrgRow;
+};
+/** 2-norm function that avoids overflow and underflow. */
+exports.hypot = function (a, b) {
+    if (a === 0 && b === 0) {
+        return 0;
+    }
+    var x = Math.abs(a);
+    var y = Math.abs(b);
+    var t = Math.min(x, y);
+    var u = Math.max(x, y);
+    var w = t / u;
+    return u * Math.sqrt(1 + w * w);
+};
+/**
+ * Get the values of the Householder reflection for the vector.
+ * @param x The array of values for the vector to reflect.
+ * @param n The number of values to take from the array.
+ * @param offset The starting offset for the array.
+ */
+exports.getHouseholderVectorValues = function (x, n, offset) {
+    if (offset === void 0) { offset = 0; }
+    if (n === 0) {
+        throw new Error("getHouseholderVector(): length of vector is zero.");
+    }
+    var v = [];
+    var alpha = 0;
+    for (var i = 0; i < n; ++i) {
+        var xi = x[offset + i];
+        v.push(xi);
+        alpha = exports.hypot(alpha, xi);
+    }
+    var x0 = v[0];
+    // construct v = u / |u|, u = x - (alpha)*e1, alpha = |x|
+    v[0] -= Math.abs(alpha);
+    var vLen = 1.0 / Math.sqrt(2 * alpha * (alpha - x0));
+    for (var i = 0; i < n; ++i) {
+        v[i] *= vLen;
+    }
+    return v;
 };
 //# sourceMappingURL=helpers.js.map

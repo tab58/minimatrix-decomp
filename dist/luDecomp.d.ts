@@ -1,8 +1,8 @@
 import { Vector, Matrix } from 'minimatrix';
 export declare class LUSolver {
-    static decompose(AA: Matrix): {
+    static decompose<T extends Matrix>(AA: T): {
         P: number[];
-        A: Matrix;
+        A: T;
     };
-    static solve(A: Matrix, P: number[], b: Vector): Vector;
+    static solveLinear<T extends Matrix, U extends Vector>(A: T, P: number[], b: U): U;
 }

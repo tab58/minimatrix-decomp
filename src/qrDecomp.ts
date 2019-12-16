@@ -1,44 +1,5 @@
 import { Vector, Matrix, LinAlgHelpers } from 'minimatrix';
-
-/** 2-norm function that avoids overflow and underflow. */
-const hypot = (a: number, b: number): number => {
-  if (a === 0 && b === 0) {
-    return 0;
-  }
-  const x = Math.abs(a);
-  const y = Math.abs(b);
-  const t = Math.min(x, y);
-  const u = Math.max(x, y);
-  const w = t / u;
-  return u * Math.sqrt(1 + w * w);
-}
-
-/**
- * Get the values of the Householder reflection for the vector.
- * @param x The array of values for the vector to reflect.
- * @param n The number of values to take from the array.
- * @param offset The starting offset for the array.
- */
-const getHouseholderVectorValues = (x: number[], n: number, offset: number = 0): number[] => {
-  if (n === 0) {
-    throw new Error(`getHouseholderVector(): length of vector is zero.`);
-  }
-  const v = [];
-  let alpha = 0;
-  for (let i = 0; i < n; ++i) {
-    const xi = x[offset + i];
-    v.push(xi);
-    alpha = hypot(alpha, xi);
-  }
-  const [ x0 ] = v;
-  // construct v = u / |u|, u = x - (alpha)*e1, alpha = |x|
-  v[0] -= Math.abs(alpha);
-  const vLen = 1.0 / Math.sqrt(2 * alpha * (alpha - x0));
-  for (let i = 0; i < n; ++i) {
-    v[i] *= vLen;
-  }
-  return v;
-}
+import { getHouseholderVectorValues } from './helpers';
 
 /** Class for QR decomposition and linear equation solving. */
 export class QRSolver {

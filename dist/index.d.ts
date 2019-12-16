@@ -1,2 +1,3 @@
 import { LUSolver } from './luDecomp';
-export { LUSolver };
+import { QRSolver } from './qrDecomp';
+export { LUSolver, QRSolver };
