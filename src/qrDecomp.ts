@@ -14,7 +14,7 @@ const hypot = (a: number, b: number): number => {
 }
 
 /**
- * Get the Householder reflection for the vector.
+ * Get the values of the Householder reflection for the vector.
  * @param x The array of values for the vector to reflect.
  * @param n The number of values to take from the array.
  * @param offset The starting offset for the array.
@@ -59,9 +59,8 @@ export class QRSolver {
       H.identity();
       const nrows = n - j;
       if (nrows > 1) {
-        const a = R.toArray([], 0);
         // get householder vector
-        for (let i = j; i < n; ++i) { x[i] = a[i + j * n]; }
+        for (let i = j; i < n; ++i) { x[i] = R.get(i, j); }
         const vv = getHouseholderVectorValues(x, nrows, j);
         const v = LinAlgHelpers.vectorFromValues(vv, nrows, 0);
 
