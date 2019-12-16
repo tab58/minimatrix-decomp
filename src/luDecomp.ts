@@ -70,7 +70,7 @@ export class LUSolver {
     };
   }
 
-  public static solve <T extends Matrix, U extends Vector>(A: T, P: number[], b: U): U {
+  public static solveLinear <T extends Matrix, U extends Vector>(A: T, P: number[], b: U): U {
     // Since PA = LU, then L(Ux) = Pb
     const a = A.toArray([], 0);
     const n = Math.floor(Math.sqrt(a.length));
