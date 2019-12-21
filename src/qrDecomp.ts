@@ -1,5 +1,5 @@
-import { Vector, Matrix, LinAlgHelpers } from 'minimatrix';
-import { getHouseholderVectorValues } from './helpers';
+import { LinAlgHelpers } from 'minimatrix';
+import { Vector, Matrix, Householder } from './helpers';
 
 /** Class for QR decomposition and linear equation solving. */
 export class QRSolver {
@@ -7,7 +7,7 @@ export class QRSolver {
    * Decomposes the matrix using Householder reflections into
    * an orthogonal matrix Q and a right triangular matrix R.
    */
-  public static decompose <T extends Matrix>(A: T): { Q: T, R: T } {
+  public static decompose (A: Matrix): { Q: Matrix, R: Matrix } {
     const n = A.colDimension;
     const Q = A.clone().identity();
     const R = A.clone();
@@ -22,22 +22,27 @@ export class QRSolver {
       if (nrows > 1) {
         // get householder vector
         for (let i = j; i < n; ++i) { x[i] = R.get(i, j); }
-        const vv = getHouseholderVectorValues(x, nrows, j);
-        const v = LinAlgHelpers.vectorFromValues(vv, nrows, 0);
 
-        // calculate the Householder matrix H
-        const HH = LinAlgHelpers.getOuterProduct(v).multiplyScalar(-2);
-        for (let i = 0; i < nrows; ++i) {
-          for (let k = 0; k < nrows; ++k) {
-            const t = (i === k ? 1 : 0) + HH.get(i, k); // HH = I - 2 * v * v^T
-            H.set(j + i, j + k, t);
-          }
-        }
+        // const vv = getHouseholderVectorValues(x, nrows, j);
+        // const v = LinAlgHelpers.vectorFromValues(vv, nrows, 0);
+
+        // // calculate the Householder matrix H
+        // const HH = LinAlgHelpers.getOuterProduct(v).multiplyScalar(-2);
+        // for (let i = 0; i < nrows; ++i) {
+        //   for (let k = 0; k < nrows; ++k) {
+        //     const t = (i === k ? 1 : 0) + HH.get(i, k); // HH = I - 2 * v * v^T
+        //     H.set(j + i, j + k, t);
+        //   }
+        // }
+        const { v, beta } = Householder.getVector(x, nrows, j);
+
+        console.log(R.toArray([], 0));
+
 
         // R' = H * R, Q' = Q * H^T
-        R.premultiply(H);
-        H.transpose();
-        Q.multiply(H);
+        // R.premultiply(H);
+        // H.transpose();
+        // Q.multiply(H);
       }
     }
     return { Q, R };

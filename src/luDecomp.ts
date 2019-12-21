@@ -1,4 +1,3 @@
-import { Vector, Matrix } from 'minimatrix';
 import { findLargestInRow, swapArrayElements, swapMatrixArrayRows } from './helpers';
 
 export class LUSolver {
